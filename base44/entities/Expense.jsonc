@@ -1,0 +1,56 @@
+{
+  "name": "Expense",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date du frais"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "carburant",
+        "peage",
+        "entretien",
+        "autre"
+      ],
+      "description": "Type de frais"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Montant en euros"
+    },
+    "label": {
+      "type": "string",
+      "description": "Description optionnelle"
+    }
+  },
+  "required": [
+    "date",
+    "type",
+    "amount"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

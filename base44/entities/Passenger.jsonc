@@ -1,0 +1,114 @@
+{
+  "name": "Passenger",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email du passager (modifiable)"
+    },
+    "full_name": {
+      "type": "string",
+      "description": "Nom complet du passager"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de naissance du passager"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Num\u00e9ro de t\u00e9l\u00e9phone du passager"
+    },
+    "address": {
+      "type": "string",
+      "description": "Adresse du passager"
+    },
+    "whatsapp_number": {
+      "type": "string",
+      "description": "Num\u00e9ro WhatsApp pour l'authentification du bot"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "Premier identifiant utilisateur li\u00e9 \u00e0 ce passager (h\u00e9ritage, conserv\u00e9 pour compatibilit\u00e9)"
+    },
+    "user_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tous les identifiants utilisateur li\u00e9s \u00e0 ce passager (Google, Apple, email/mot de passe...). Permet la connexion via plusieurs providers sans perte d'acc\u00e8s, m\u00eame apr\u00e8s un changement d'email."
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Passager actif (true) ou d\u00e9sactiv\u00e9 (false). Un passager d\u00e9sactiv\u00e9 perd l'acc\u00e8s \u00e0 son espace mais conserve ses donn\u00e9es."
+    }
+  },
+  "required": [
+    "email",
+    "full_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_ids": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_ids": {
+            "$in": [
+              "{{user.id}}"
+            ]
+          }
+        },
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

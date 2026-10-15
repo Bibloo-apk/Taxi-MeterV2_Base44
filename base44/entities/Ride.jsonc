@@ -1,0 +1,127 @@
+{
+  "name": "Ride",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure de la course"
+    },
+    "distance_km": {
+      "type": "number",
+      "description": "Distance totale parcourue en km (affichage passager)"
+    },
+    "distance_billable_km": {
+      "type": "number",
+      "description": "Distance facturable en km (parcourue au-dessus du seuil de vitesse)"
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "description": "Dur\u00e9e en secondes"
+    },
+    "waiting_seconds": {
+      "type": "integer",
+      "description": "Temps d'attente en secondes (vitesse inf\u00e9rieure au seuil)"
+    },
+    "price": {
+      "type": "number",
+      "description": "Prix total de la course"
+    },
+    "tarif_used": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "description": "Tarif utilis\u00e9"
+    },
+    "supplements": {
+      "type": "number",
+      "description": "Suppl\u00e9ments ajout\u00e9s"
+    },
+    "supplements_detail": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "D\u00e9tail des suppl\u00e9ments appliqu\u00e9s"
+    },
+    "rounding_mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "0.50",
+        "1.00"
+      ],
+      "description": "Mode d'arrondi appliqu\u00e9 au prix final"
+    },
+    "passenger_id": {
+      "type": "string",
+      "description": "Identifiant du passager associ\u00e9 (r\u00e9f\u00e9rence stable, permet le changement d'email)"
+    },
+    "passenger_email": {
+      "type": "string",
+      "description": "Email du passager au moment de la course (conserv\u00e9 pour l'historique)"
+    }
+  },
+  "required": [
+    "date",
+    "distance_km",
+    "duration_seconds",
+    "price",
+    "tarif_used"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.passenger_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

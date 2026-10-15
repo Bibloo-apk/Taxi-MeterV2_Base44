@@ -1,0 +1,76 @@
+{
+  "name": "TarifSettings",
+  "type": "object",
+  "properties": {
+    "tarif_code": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "description": "Code du tarif"
+    },
+    "label": {
+      "type": "string",
+      "description": "Libell\u00e9 du tarif"
+    },
+    "prise_en_charge": {
+      "type": "number",
+      "description": "Prix de prise en charge en euros"
+    },
+    "prix_km": {
+      "type": "number",
+      "description": "Prix par km en euros"
+    },
+    "prix_attente_heure": {
+      "type": "number",
+      "description": "Prix d'attente par heure en euros"
+    },
+    "tarif_minimum": {
+      "type": "number",
+      "description": "Tarif minimum de la course en euros"
+    }
+  },
+  "required": [
+    "tarif_code",
+    "label",
+    "prise_en_charge",
+    "prix_km",
+    "prix_attente_heure",
+    "tarif_minimum"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
