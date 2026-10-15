@@ -1,0 +1,71 @@
+{
+  "name": "EmailLog",
+  "type": "object",
+  "properties": {
+    "recipient": {
+      "type": "string",
+      "description": "Adresse e-mail du destinataire"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Sujet de l'email"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "sent",
+        "failed"
+      ],
+      "description": "Statut de l'envoi"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Message d'erreur si \u00e9chec"
+    },
+    "ride_id": {
+      "type": "string",
+      "description": "Identifiant de la course associ\u00e9e"
+    },
+    "passenger_name": {
+      "type": "string",
+      "description": "Nom du passager"
+    },
+    "retry_count": {
+      "type": "integer",
+      "default": 0,
+      "description": "Nombre de tentatives de renvoi"
+    },
+    "sent_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date d'envoi"
+    }
+  },
+  "required": [
+    "recipient",
+    "status",
+    "sent_date"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
